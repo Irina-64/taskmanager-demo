@@ -1,6 +1,8 @@
 import dayjs from 'dayjs';
 import {createElement} from '../render.js';
 
+const isExpired = (dueDate) => dueDate && dayjs().isAfter(dueDate, 'D');
+
 const createTaskTemplate = (task) => {
   const {color, description, dueDate} = task;
 
@@ -8,49 +10,53 @@ const createTaskTemplate = (task) => {
     ? dayjs(dueDate).format('D MMMM')
     : '';
 
+  const deadlineClassName = isExpired(dueDate)
+    ? 'card--deadline'
+    : '';
+
   return (
-    `<article class="card card--${color}">
-    <div class="card__form">
-      <div class="card__inner">
-        <div class="card__control">
-          <button type="button" class="card__btn card__btn--edit">
-            edit
-          </button>
-          <button type="button" class="card__btn card__btn--archive">
-            archive
-          </button>
-          <button
-            type="button"
-            class="card__btn card__btn--favorites"
-          >
-            favorites
-          </button>
-        </div>
+    `<article class="card card--${color} ${deadlineClassName}">
+      <div class="card__form">
+        <div class="card__inner">
+          <div class="card__control">
+            <button type="button" class="card__btn card__btn--edit">
+              edit
+            </button>
+            <button type="button" class="card__btn card__btn--archive">
+              archive
+            </button>
+            <button
+              type="button"
+              class="card__btn card__btn--favorites"
+            >
+              favorites
+            </button>
+          </div>
 
-        <div class="card__color-bar">
-          <svg class="card__color-bar-wave" width="100%" height="10">
-            <use xlink:href="#wave"></use>
-          </svg>
-        </div>
+          <div class="card__color-bar">
+            <svg class="card__color-bar-wave" width="100%" height="10">
+              <use xlink:href="#wave"></use>
+            </svg>
+          </div>
 
-        <div class="card__textarea-wrap">
-          <p class="card__text">${description}</p>
-        </div>
+          <div class="card__textarea-wrap">
+            <p class="card__text">${description}</p>
+          </div>
 
-        <div class="card__settings">
-          <div class="card__details">
-            <div class="card__dates">
-              <div class="card__date-deadline">
-                <p class="card__input-deadline-wrap">
-                  <span class="card__date">${date}</span>
-                </p>
+          <div class="card__settings">
+            <div class="card__details">
+              <div class="card__dates">
+                <div class="card__date-deadline">
+                  <p class="card__input-deadline-wrap">
+                    <span class="card__date">${date}</span>
+                  </p>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </article>`
+    </article>`
   );
 };
 
