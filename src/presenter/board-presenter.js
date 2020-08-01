@@ -22,7 +22,7 @@ export default class BoardPresenter {
     render(this.taskListComponent, this.boardComponent.getElement());
     render(new TaskEditView(this.boardTasks[0]), this.taskListComponent.getElement());
 
-    for (let i = 1; i < this.boardTasks.length; i++) {
+    for (let i = 1; i < Math.min(this.boardTasks.length, TASK_COUNT_PER_STEP); i++) {
       render(new TaskView(this.boardTasks[i]), this.taskListComponent.getElement());
     }
 
@@ -30,9 +30,20 @@ export default class BoardPresenter {
       const loadMoreButtonComponent = new LoadMoreButtonView();
       render(loadMoreButtonComponent, this.boardComponent.getElement());
 
+      let renderedTaskCount = TASK_COUNT_PER_STEP;
+
       loadMoreButtonComponent.getElement().addEventListener('click', (evt) => {
         evt.preventDefault();
-        alert('Works!');
+        this.boardTasks
+          .slice(renderedTaskCount, renderedTaskCount + TASK_COUNT_PER_STEP)
+          .forEach((task) => render(new TaskView(task), this.taskListComponent.getElement()));
+
+        renderedTaskCount += TASK_COUNT_PER_STEP;
+
+        if (renderedTaskCount >= this.boardTasks.length) {
+          loadMoreButtonComponent.getElement().remove();
+          loadMoreButtonComponent.removeElement();
+        }
       });
     }
   };
