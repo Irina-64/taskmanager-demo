@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import {createElement} from '../render.js';
+import {COLORS} from '../const.js';
 
 const isRepeating = (repeating) => Object.values(repeating).some(Boolean);
 
@@ -44,10 +45,8 @@ const createTaskEditRepeatingTemplate = (repeating) => (
   </fieldset>` : ''}`
 );
 
-const createTaskEditColorsTemplate = (currentColor) => {
-  const colors = ['black', 'yellow', 'blue', 'green', 'pink'];
-
-  return colors.map((color) => `<input
+const createTaskEditColorsTemplate = (currentColor) => COLORS.map((color) => (
+  `<input
     type="radio"
     id="color-${color}"
     class="card__color-input card__color-input--${color} visually-hidden"
@@ -59,8 +58,8 @@ const createTaskEditColorsTemplate = (currentColor) => {
     for="color-${color}"
     class="card__color card__color--${color}"
     >${color}</label
-  >`).join('');
-};
+  >`))
+  .join('');
 
 const createTaskEditTemplate = (task = {}) => {
   const {
