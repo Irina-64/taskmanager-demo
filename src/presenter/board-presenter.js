@@ -49,13 +49,12 @@ export default class BoardPresenter {
       }
     };
 
-    taskComponent.element.querySelector('.card__btn--edit').addEventListener('click', () => {
+    taskComponent.setEditClickHandler(() => {
       replaceCardToForm();
       document.addEventListener('keydown', onEscKeyDown);
     });
 
-    taskEditComponent.element.querySelector('form').addEventListener('submit', (evt) => {
-      evt.preventDefault();
+    taskEditComponent.setFormSubmitHandler(() => {
       replaceFormToCard();
       document.removeEventListener('keydown', onEscKeyDown);
     });
@@ -85,8 +84,7 @@ export default class BoardPresenter {
 
       let renderedTaskCount = TASK_COUNT_PER_STEP;
 
-      loadMoreButtonComponent.element.addEventListener('click', (evt) => {
-        evt.preventDefault();
+      loadMoreButtonComponent.setClickHandler(() => {
         this.#boardTasks
           .slice(renderedTaskCount, renderedTaskCount + TASK_COUNT_PER_STEP)
           .forEach((task) => this.#renderTask(task));
