@@ -25,10 +25,9 @@ export default class BoardPresenter {
     render(this.#boardComponent, this.#boardContainer);
     render(new SortView(), this.#boardComponent.element);
     render(this.#taskListComponent, this.#boardComponent.element);
-    render(new TaskEditView(this.#boardTasks[0]), this.#taskListComponent.element);
 
-    for (let i = 1; i < Math.min(this.#boardTasks.length, TASK_COUNT_PER_STEP); i++) {
-      render(new TaskView(this.#boardTasks[i]), this.#taskListComponent.element);
+    for (let i = 0; i < Math.min(this.#boardTasks.length, TASK_COUNT_PER_STEP); i++) {
+      this.#renderTask(this.#boardTasks[i]);
     }
 
     if (this.#boardTasks.length > TASK_COUNT_PER_STEP) {
@@ -41,7 +40,7 @@ export default class BoardPresenter {
         evt.preventDefault();
         this.#boardTasks
           .slice(renderedTaskCount, renderedTaskCount + TASK_COUNT_PER_STEP)
-          .forEach((task) => render(new TaskView(task), this.#taskListComponent.element));
+          .forEach((task) => this.#renderTask(task));
 
         renderedTaskCount += TASK_COUNT_PER_STEP;
 
@@ -52,4 +51,10 @@ export default class BoardPresenter {
       });
     }
   }
+
+  #renderTask = (task) => {
+    const taskComponent = new TaskView(task);
+
+    render(taskComponent, this.#taskListComponent.element);
+  };
 }
