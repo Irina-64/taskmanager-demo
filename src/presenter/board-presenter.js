@@ -9,39 +9,44 @@ import {render} from '../render.js';
 const TASK_COUNT_PER_STEP = 8;
 
 export default class BoardPresenter {
-  boardComponent = new BoardView();
-  taskListComponent = new TaskListView();
+  #boardContainer = null;
+  #tasksModel = null;
+
+  #boardComponent = new BoardView();
+  #taskListComponent = new TaskListView();
+
+  #boardTasks = [];
 
   init = (boardContainer, tasksModel) => {
-    this.boardContainer = boardContainer;
-    this.tasksModel = tasksModel;
-    this.boardTasks = [...this.tasksModel.getTasks()];
+    this.#boardContainer = boardContainer;
+    this.#tasksModel = tasksModel;
+    this.#boardTasks = [...this.#tasksModel.tasks];
 
-    render(this.boardComponent, this.boardContainer);
-    render(new SortView(), this.boardComponent.getElement());
-    render(this.taskListComponent, this.boardComponent.getElement());
-    render(new TaskEditView(this.boardTasks[0]), this.taskListComponent.getElement());
+    render(this.#boardComponent, this.#boardContainer);
+    render(new SortView(), this.#boardComponent.element);
+    render(this.#taskListComponent, this.#boardComponent.element);
+    render(new TaskEditView(this.#boardTasks[0]), this.#taskListComponent.element);
 
-    for (let i = 1; i < Math.min(this.boardTasks.length, TASK_COUNT_PER_STEP); i++) {
-      render(new TaskView(this.boardTasks[i]), this.taskListComponent.getElement());
+    for (let i = 1; i < Math.min(this.#boardTasks.length, TASK_COUNT_PER_STEP); i++) {
+      render(new TaskView(this.#boardTasks[i]), this.#taskListComponent.element);
     }
 
-    if (this.boardTasks.length > TASK_COUNT_PER_STEP) {
+    if (this.#boardTasks.length > TASK_COUNT_PER_STEP) {
       const loadMoreButtonComponent = new LoadMoreButtonView();
-      render(loadMoreButtonComponent, this.boardComponent.getElement());
+      render(loadMoreButtonComponent, this.#boardComponent.element);
 
       let renderedTaskCount = TASK_COUNT_PER_STEP;
 
-      loadMoreButtonComponent.getElement().addEventListener('click', (evt) => {
+      loadMoreButtonComponent.element.addEventListener('click', (evt) => {
         evt.preventDefault();
-        this.boardTasks
+        this.#boardTasks
           .slice(renderedTaskCount, renderedTaskCount + TASK_COUNT_PER_STEP)
-          .forEach((task) => render(new TaskView(task), this.taskListComponent.getElement()));
+          .forEach((task) => render(new TaskView(task), this.#taskListComponent.element));
 
         renderedTaskCount += TASK_COUNT_PER_STEP;
 
-        if (renderedTaskCount >= this.boardTasks.length) {
-          loadMoreButtonComponent.getElement().remove();
+        if (renderedTaskCount >= this.#boardTasks.length) {
+          loadMoreButtonComponent.element.remove();
           loadMoreButtonComponent.removeElement();
         }
       });
