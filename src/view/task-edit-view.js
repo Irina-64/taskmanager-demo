@@ -1,8 +1,6 @@
-import dayjs from 'dayjs';
 import {createElement} from '../render.js';
 import {COLORS} from '../const.js';
-
-const isRepeating = (repeating) => Object.values(repeating).some(Boolean);
+import {isTaskRepeating, humanizeTaskDueDate} from '../utils.js';
 
 const createTaskEditDateTemplate = (dueDate) => (
   `<button class="card__date-deadline-toggle" type="button">
@@ -16,7 +14,7 @@ const createTaskEditDateTemplate = (dueDate) => (
           type="text"
           placeholder=""
           name="date"
-          value="${dayjs(dueDate).format('D MMMM')}"
+          value="${humanizeTaskDueDate(dueDate)}"
         />
       </label>
     </fieldset>` : ''}
@@ -25,10 +23,10 @@ const createTaskEditDateTemplate = (dueDate) => (
 
 const createTaskEditRepeatingTemplate = (repeating) => (
   `<button class="card__repeat-toggle" type="button">
-    repeat:<span class="card__repeat-status">${isRepeating(repeating) ? 'yes' : 'no'}</span>
+    repeat:<span class="card__repeat-status">${isTaskRepeating(repeating) ? 'yes' : 'no'}</span>
   </button>
 
-  ${isRepeating(repeating) ? `<fieldset class="card__repeat-days">
+  ${isTaskRepeating(repeating) ? `<fieldset class="card__repeat-days">
     <div class="card__repeat-days-inner">
       ${Object.entries(repeating).map(([day, repeat]) => `<input
         class="visually-hidden card__repeat-day-input"
@@ -79,7 +77,7 @@ const createTaskEditTemplate = (task = {}) => {
 
   const dateTemplate = createTaskEditDateTemplate(dueDate);
 
-  const repeatingClassName = isRepeating(repeating)
+  const repeatingClassName = isTaskRepeating(repeating)
     ? 'card--repeat'
     : '';
   const repeatingTemplate = createTaskEditRepeatingTemplate(repeating);
