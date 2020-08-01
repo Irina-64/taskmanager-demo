@@ -5,7 +5,7 @@ import TaskView from '../view/task-view.js';
 import TaskEditView from '../view/task-edit-view.js';
 import LoadMoreButtonView from '../view/load-more-button-view.js';
 import NoTaskView from '../view/no-task-view.js';
-import {render} from '../render.js';
+import {render, replace, remove} from '../utils/render.js';
 
 const TASK_COUNT_PER_STEP = 8;
 
@@ -34,11 +34,11 @@ export default class BoardPresenter {
     const taskEditComponent = new TaskEditView(task);
 
     const replaceCardToForm = () => {
-      this.#taskListComponent.element.replaceChild(taskEditComponent.element, taskComponent.element);
+      replace(taskEditComponent, taskComponent);
     };
 
     const replaceFormToCard = () => {
-      this.#taskListComponent.element.replaceChild(taskComponent.element, taskEditComponent.element);
+      replace(taskComponent, taskEditComponent);
     };
 
     const onEscKeyDown = (evt) => {
@@ -92,8 +92,7 @@ export default class BoardPresenter {
         renderedTaskCount += TASK_COUNT_PER_STEP;
 
         if (renderedTaskCount >= this.#boardTasks.length) {
-          loadMoreButtonComponent.element.remove();
-          loadMoreButtonComponent.removeElement();
+          remove(loadMoreButtonComponent);
         }
       });
     }

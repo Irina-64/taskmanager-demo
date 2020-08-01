@@ -1,6 +1,6 @@
 import NewTaskButtonView from './view/new-task-button-view.js';
 import FilterView from './view/filter-view.js';
-import {render} from './render.js';
+import {render} from './utils/render.js';
 import BoardPresenter from './presenter/board-presenter.js';
 import TasksModel from './model/tasks-model.js';
 import {generateFilter} from './mock/filter.js';
