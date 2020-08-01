@@ -20,7 +20,7 @@ export const createElement = (template) => {
 // а не просто <a>Link 1</a><a>Link 2</a>
 
 export const render = (component, container, place = RenderPosition.BEFOREEND) => {
-  const element = component.getElement();
+  const element = component.element;
 
   switch (place) {
     case RenderPosition.BEFOREBEGIN:
