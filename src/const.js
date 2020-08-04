@@ -1,3 +1,9 @@
 const COLORS = ['black', 'yellow', 'blue', 'green', 'pink'];
 
-export {COLORS};
+const SortType = {
+  DEFAULT: 'default',
+  DATE_DOWN: 'date-down',
+  DATE_UP: 'date-up',
+};
+
+export {COLORS, SortType};
