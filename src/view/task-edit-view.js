@@ -153,6 +153,16 @@ export default class TaskEditView extends AbstractView {
     this._callback.formSubmit(TaskEditView.parseStateToTask(this._state));
   }
 
+  #rerenderElement = () => {
+    const prevElement = this.element;
+    const parent = prevElement.parentElement;
+    this.removeElement();
+
+    const newElement = this.element;
+
+    parent.replaceChild(newElement, prevElement);
+  }
+
   static parseTaskToState = (task) => ({...task,
     isDueDate: task.dueDate !== null,
     isRepeating: isTaskRepeating(task.repeating),
