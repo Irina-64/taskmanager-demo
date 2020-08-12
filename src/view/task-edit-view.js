@@ -157,19 +157,18 @@ export default class TaskEditView extends AbstractView {
       return;
     }
 
-    this._state = {...this._state, ...update};
+    this._setState(update);
 
     this.#rerenderElement();
+  }
+
+  _setState = (update) => {
+    this._state = {...this._state, ...update};
   }
 
   _restoreHandlers = () => {
     this.#setInnerHandlers();
     this.setFormSubmitHandler(this._callback.formSubmit);
-  }
-
-  #formSubmitHandler = (evt) => {
-    evt.preventDefault();
-    this._callback.formSubmit(TaskEditView.parseStateToTask(this._state));
   }
 
   #rerenderElement = () => {
@@ -189,6 +188,8 @@ export default class TaskEditView extends AbstractView {
       .addEventListener('click', this.#dueDateToggleHandler);
     this.element.querySelector('.card__repeat-toggle')
       .addEventListener('click', this.#repeatingToggleHandler);
+    this.element.querySelector('.card__text')
+      .addEventListener('input', this.#descriptionInputHandler);
   }
 
   #dueDateToggleHandler = (evt) => {
@@ -203,6 +204,18 @@ export default class TaskEditView extends AbstractView {
     this.updateElement({
       isRepeating: !this._state.isRepeating,
     });
+  }
+
+  #descriptionInputHandler = (evt) => {
+    evt.preventDefault();
+    this._setState({
+      description: evt.target.value,
+    });
+  }
+
+  #formSubmitHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.formSubmit(TaskEditView.parseStateToTask(this._state));
   }
 
   static parseTaskToState = (task) => ({...task,
