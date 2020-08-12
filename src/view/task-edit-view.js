@@ -1,4 +1,4 @@
-import AbstractView from './abstract-view.js';
+import SmartView from './smart-view.js';
 import {COLORS} from '../const.js';
 import {isTaskRepeating, formatTaskDueDate} from '../utils/task.js';
 
@@ -135,7 +135,7 @@ const createTaskEditTemplate = (data) => {
   </article>`;
 };
 
-export default class TaskEditView extends AbstractView {
+export default class TaskEditView extends SmartView {
   constructor(task = BLANK_TASK) {
     super();
     this._state = TaskEditView.parseTaskToState(task);
@@ -152,35 +152,9 @@ export default class TaskEditView extends AbstractView {
     this.element.querySelector('form').addEventListener('submit', this.#formSubmitHandler);
   }
 
-  updateElement = (update) => {
-    if (!update) {
-      return;
-    }
-
-    this._setState(update);
-
-    this.#rerenderElement();
-  }
-
-  _setState = (update) => {
-    this._state = {...this._state, ...update};
-  }
-
   _restoreHandlers = () => {
     this.#setInnerHandlers();
     this.setFormSubmitHandler(this._callback.formSubmit);
-  }
-
-  #rerenderElement = () => {
-    const prevElement = this.element;
-    const parent = prevElement.parentElement;
-    this.removeElement();
-
-    const newElement = this.element;
-
-    parent.replaceChild(newElement, prevElement);
-
-    this._restoreHandlers();
   }
 
   #setInnerHandlers = () => {
