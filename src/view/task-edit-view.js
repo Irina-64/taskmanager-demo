@@ -88,6 +88,8 @@ const createTaskEditTemplate = (data) => {
 
   const colorsTemplate = createTaskEditColorsTemplate(color);
 
+  const isSubmitDisabled = isRepeating && !isTaskRepeating(repeating);
+
   return `<article class="card card--edit card--${color} ${repeatingClassName}">
     <form class="card__form" method="get">
       <div class="card__inner">
@@ -125,7 +127,7 @@ const createTaskEditTemplate = (data) => {
         </div>
 
         <div class="card__status-btns">
-          <button class="card__save" type="submit">save</button>
+          <button class="card__save" type="submit" ${isSubmitDisabled ? 'disabled' : ''}>save</button>
           <button class="card__delete" type="button">delete</button>
         </div>
       </div>
@@ -188,12 +190,24 @@ export default class TaskEditView extends AbstractView {
       .addEventListener('click', this.#repeatingToggleHandler);
     this.element.querySelector('.card__text')
       .addEventListener('input', this.#descriptionInputHandler);
+
+    if (this._state.isRepeating) {
+      this.element.querySelector('.card__repeat-days-inner')
+        .addEventListener('change', this.#repeatingChangeHandler);
+    }
+
+    this.element.querySelector('.card__colors-wrap')
+      .addEventListener('change', this.#colorChangeHandler);
   }
 
   #dueDateToggleHandler = (evt) => {
     evt.preventDefault();
     this.updateElement({
       isDueDate: !this._state.isDueDate,
+      // Логика следующая: если выбор даты нужно показать,
+      // то есть когда "!this._state.isDueDate === true",
+      // тогда isRepeating должно быть строго false.
+      isRepeating: !this._state.isDueDate ? false : this._state.isRepeating,
     });
   }
 
@@ -201,6 +215,8 @@ export default class TaskEditView extends AbstractView {
     evt.preventDefault();
     this.updateElement({
       isRepeating: !this._state.isRepeating,
+      // Аналогично, но наоборот, для повторения
+      isDueDate: !this._state.isRepeating ? false : this._state.isDueDate,
     });
   }
 
@@ -208,6 +224,20 @@ export default class TaskEditView extends AbstractView {
     evt.preventDefault();
     this._setState({
       description: evt.target.value,
+    });
+  }
+
+  #repeatingChangeHandler = (evt) => {
+    evt.preventDefault();
+    this.updateElement({
+      repeating: {...this._state.repeating, [evt.target.value]: evt.target.checked},
+    });
+  }
+
+  #colorChangeHandler = (evt) => {
+    evt.preventDefault();
+    this.updateElement({
+      color: evt.target.value,
     });
   }
 
