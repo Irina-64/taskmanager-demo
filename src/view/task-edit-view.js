@@ -1,3 +1,4 @@
+import he from 'he';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import {COLORS} from '../const.js';
 import {isTaskRepeating, formatTaskDueDate} from '../utils/task.js';
@@ -103,15 +104,15 @@ const createTaskEditTemplate = (data) => {
             </svg>
           </div>
 
-            <div class="card__textarea-wrap">
-              <label>
-                <textarea
-                  class="card__text"
-                  placeholder="Start typing your text here..."
-                  name="text"
-                >${description}</textarea>
-              </label>
-            </div>
+          <div class="card__textarea-wrap">
+            <label>
+              <textarea
+                class="card__text"
+                placeholder="Start typing your text here..."
+                name="text"
+              >${he.encode(description)}</textarea>
+            </label>
+          </div>
 
             <div class="card__settings">
               <div class="card__details">
