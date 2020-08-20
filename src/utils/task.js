@@ -38,4 +38,6 @@ const sortTaskDown = (taskA, taskB) => {
   return weight ?? dayjs(taskB.dueDate).diff(dayjs(taskA.dueDate));
 };
 
-export {isTaskExpired, isTaskExpiringToday, isTaskRepeating, formatTaskDueDate, sortTaskUp, sortTaskDown};
+const isDatesEqual = (dateA, dateB) => (dateA === null && dateB === null) || dayjs(dateA).isSame(dateB, 'D');
+
+export {isTaskExpired, isTaskExpiringToday, isTaskRepeating, formatTaskDueDate, sortTaskUp, sortTaskDown, isDatesEqual};
