@@ -3,6 +3,7 @@ import SortView from '../view/sort-view.js';
 import TaskListView from '../view/task-list-view.js';
 import LoadMoreButtonView from '../view/load-more-button-view.js';
 import NoTaskView from '../view/no-task-view.js';
+import LoadingView from '../view/loading-view.js';
 import TaskPresenter from './task-presenter.js';
 import TaskNewPresenter from './task-new-presenter.js';
 import {render, RenderPosition, remove} from '../utils/render.js';
@@ -19,6 +20,7 @@ export default class BoardPresenter {
 
   #boardComponent = new BoardView();
   #taskListComponent = new TaskListView();
+  #loadingComponent = new LoadingView();
   #noTaskComponent = null;
   #sortComponent = null;
   #loadMoreButtonComponent = null;
@@ -28,6 +30,7 @@ export default class BoardPresenter {
   #taskNewPresenter = null;
   #currentSortType = SortType.DEFAULT;
   #filterType = FilterType.ALL;
+  #isLoading = true;
 
   constructor(boardContainer, tasksModel, filterModel) {
     this.#boardContainer = boardContainer;
@@ -97,6 +100,11 @@ export default class BoardPresenter {
         this.#clearBoard({resetRenderedTaskCount: true, resetSortType: true});
         this.#renderBoard();
         break;
+      case UpdateType.INIT:
+        this.#isLoading = false;
+        remove(this.#loadingComponent);
+        this.#renderBoard();
+        break;
     }
   }
 
@@ -125,6 +133,10 @@ export default class BoardPresenter {
 
   #renderTasks = (tasks) => {
     tasks.forEach((task) => this.#renderTask(task));
+  }
+
+  #renderLoading = () => {
+    render(this.#loadingComponent, this.#boardComponent.element, RenderPosition.AFTERBEGIN);
   }
 
   #renderNoTasks = () => {
@@ -160,6 +172,7 @@ export default class BoardPresenter {
     this.#taskPresenter.clear();
 
     remove(this.#sortComponent);
+    remove(this.#loadingComponent);
     remove(this.#loadMoreButtonComponent);
 
     if (this.#noTaskComponent) {
@@ -181,6 +194,11 @@ export default class BoardPresenter {
   }
 
   #renderBoard = () => {
+    if (this.#isLoading) {
+      this.#renderLoading();
+      return;
+    }
+
     const tasks = this.tasks;
     const taskCount = tasks.length;
 
