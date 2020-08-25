@@ -1,4 +1,5 @@
 import Observable from '../framework/observable.js';
+import {UpdateType} from '../const.js';
 
 export default class TasksModel extends Observable {
   #tasksApiService = null;
@@ -14,8 +15,14 @@ export default class TasksModel extends Observable {
   }
 
   init = async () => {
-    const tasks = await this.#tasksApiService.tasks;
-    this.#tasks = tasks.map(this.#adaptToClient);
+    try {
+      const tasks = await this.#tasksApiService.tasks;
+      this.#tasks = tasks.map(this.#adaptToClient);
+    } catch(err) {
+      this.#tasks = [];
+    }
+
+    this._notify(UpdateType.INIT);
   };
 
   updateTask = (updateType, update) => {
