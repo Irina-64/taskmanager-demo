@@ -4,7 +4,21 @@ import {generateTask} from '../mock/task.js';
 const TASK_COUNT = 22;
 
 export default class TasksModel extends AbstractObservable {
+  #apiService = null;
   #tasks = Array.from({length: TASK_COUNT}, generateTask);
+
+  constructor(apiService) {
+    super();
+    this.#apiService = apiService;
+
+    this.#apiService.tasks.then((tasks) => {
+      console.log(tasks);
+      // Есть проблема: cтруктура объекта похожа, но некоторые ключи называются иначе,
+      // а ещё на сервере используется snake_case, а у нас camelCase.
+      // Можно, конечно, переписать часть нашего клиентского приложения, но зачем?
+      // Есть вариант получше - паттерн "Адаптер"
+    });
+  }
 
   get tasks() {
     return this.#tasks;
