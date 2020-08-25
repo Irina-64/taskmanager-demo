@@ -1,23 +1,21 @@
 import AbstractObservable from '../utils/abstract-observable.js';
-import {generateTask} from '../mock/task.js';
-
-const TASK_COUNT = 22;
 
 export default class TasksModel extends AbstractObservable {
   #apiService = null;
-  #tasks = Array.from({length: TASK_COUNT}, generateTask);
+  #tasks = [];
 
   constructor(apiService) {
     super();
     this.#apiService = apiService;
-
-    this.#apiService.tasks.then((tasks) => {
-      console.log(tasks.map(this.#adaptToClient));
-    });
   }
 
   get tasks() {
     return this.#tasks;
+  }
+
+  init = async () => {
+    const tasks = await this.#apiService.tasks;
+    this.#tasks = tasks.map(this.#adaptToClient);
   }
 
   updateTask = (updateType, update) => {
