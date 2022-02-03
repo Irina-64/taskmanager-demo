@@ -17,11 +17,11 @@ export default class LoadMoreButtonView extends AbstractView {
     this._callback.click = callback;
     // 2. В addEventListener передадим абстрактный обработчик
     this.element.addEventListener('click', this.#clickHandler);
-  }
+  };
 
   #clickHandler = (evt) => {
     evt.preventDefault();
     // 3. А внутри абстрактного обработчика вызовем колбэк
     this._callback.click();
-  }
+  };
 }

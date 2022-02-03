@@ -63,7 +63,7 @@ export default class BoardPresenter {
     this.#filterModel.addObserver(this.#handleModelEvent);
 
     this.#renderBoard();
-  }
+  };
 
   destroy = () => {
     this.#clearBoard({resetRenderedTaskCount: true, resetSortType: true});
@@ -73,16 +73,16 @@ export default class BoardPresenter {
 
     this.#tasksModel.removeObserver(this.#handleModelEvent);
     this.#filterModel.removeObserver(this.#handleModelEvent);
-  }
+  };
 
   createTask = (callback) => {
     this.#taskNewPresenter.init(callback);
-  }
+  };
 
   #handleModeChange = () => {
     this.#taskNewPresenter.destroy();
     this.#taskPresenter.forEach((presenter) => presenter.resetView());
-  }
+  };
 
   #handleViewAction = async (actionType, updateType, update) => {
     switch (actionType) {
@@ -111,7 +111,7 @@ export default class BoardPresenter {
         }
         break;
     }
-  }
+  };
 
   #handleModelEvent = (updateType, data) => {
     switch (updateType) {
@@ -132,7 +132,7 @@ export default class BoardPresenter {
         this.#renderBoard();
         break;
     }
-  }
+  };
 
   #handleSortTypeChange = (sortType) => {
     if (this.#currentSortType === sortType) {
@@ -142,33 +142,33 @@ export default class BoardPresenter {
     this.#currentSortType = sortType;
     this.#clearBoard({resetRenderedTaskCount: true});
     this.#renderBoard();
-  }
+  };
 
   #renderSort = () => {
     this.#sortComponent = new SortView(this.#currentSortType);
     this.#sortComponent.setSortTypeChangeHandler(this.#handleSortTypeChange);
 
     render(this.#boardComponent, this.#sortComponent, RenderPosition.AFTERBEGIN);
-  }
+  };
 
   #renderTask = (task) => {
     const taskPresenter = new TaskPresenter(this.#taskListComponent, this.#handleViewAction, this.#handleModeChange);
     taskPresenter.init(task);
     this.#taskPresenter.set(task.id, taskPresenter);
-  }
+  };
 
   #renderTasks = (tasks) => {
     tasks.forEach((task) => this.#renderTask(task));
-  }
+  };
 
   #renderLoading = () => {
     render(this.#boardComponent, this.#loadingComponent, RenderPosition.AFTERBEGIN);
-  }
+  };
 
   #renderNoTasks = () => {
     this.#noTaskComponent = new NoTaskView(this.#filterType);
     render(this.#boardComponent, this.#noTaskComponent, RenderPosition.AFTERBEGIN);
-  }
+  };
 
   #handleLoadMoreButtonClick = () => {
     const taskCount = this.tasks.length;
@@ -181,14 +181,14 @@ export default class BoardPresenter {
     if (this.#renderedTaskCount >= taskCount) {
       remove(this.#loadMoreButtonComponent);
     }
-  }
+  };
 
   #renderLoadMoreButton = () => {
     this.#loadMoreButtonComponent = new LoadMoreButtonView();
     this.#loadMoreButtonComponent.setClickHandler(this.#handleLoadMoreButtonClick);
 
     render(this.#boardComponent, this.#loadMoreButtonComponent, RenderPosition.BEFOREEND);
-  }
+  };
 
   #clearBoard = ({resetRenderedTaskCount = false, resetSortType = false} = {}) => {
     const taskCount = this.tasks.length;
@@ -217,7 +217,7 @@ export default class BoardPresenter {
     if (resetSortType) {
       this.#currentSortType = SortType.DEFAULT;
     }
-  }
+  };
 
   #renderBoard = () => {
     if (this.#isLoading) {
@@ -244,5 +244,5 @@ export default class BoardPresenter {
     if (taskCount > this.#renderedTaskCount) {
       this.#renderLoadMoreButton();
     }
-  }
+  };
 }

@@ -3,8 +3,8 @@ import SmartView from './smart-view.js';
 import {COLORS} from '../const.js';
 import {isTaskRepeating, formatTaskDueDate} from '../utils/task.js';
 import flatpickr from 'flatpickr';
+import '../../../node_modules/flatpickr/dist/flatpickr.min.css';
 
-import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 
 const BLANK_TASK = {
   color: COLORS[0],
@@ -181,30 +181,30 @@ export default class TaskEditView extends SmartView {
       this.#datepicker.destroy();
       this.#datepicker = null;
     }
-  }
+  };
 
   reset = (task) => {
     this.updateData(
       TaskEditView.parseTaskToData(task),
     );
-  }
+  };
 
   restoreHandlers = () => {
     this.#setInnerHandlers();
     this.#setDatepicker();
     this.setFormSubmitHandler(this._callback.formSubmit);
     this.setDeleteClickHandler(this._callback.deleteClick);
-  }
+  };
 
   setFormSubmitHandler = (callback) => {
     this._callback.formSubmit = callback;
     this.element.querySelector('form').addEventListener('submit', this.#formSubmitHandler);
-  }
+  };
 
   setDeleteClickHandler = (callback) => {
     this._callback.deleteClick = callback;
     this.element.querySelector('.card__delete').addEventListener('click', this.#formDeleteClickHandler);
-  }
+  };
 
   #setDatepicker = () => {
     if (this._data.isDueDate) {
@@ -219,7 +219,7 @@ export default class TaskEditView extends SmartView {
         },
       );
     }
-  }
+  };
 
   #setInnerHandlers = () => {
     this.element.querySelector('.card__date-deadline-toggle')
@@ -236,7 +236,7 @@ export default class TaskEditView extends SmartView {
 
     this.element.querySelector('.card__colors-wrap')
       .addEventListener('change', this.#colorChangeHandler);
-  }
+  };
 
   #dueDateToggleHandler = (evt) => {
     evt.preventDefault();
@@ -247,7 +247,7 @@ export default class TaskEditView extends SmartView {
       // тогда isRepeating должно быть строго false.
       isRepeating: !this._data.isDueDate ? false : this._data.isRepeating,
     });
-  }
+  };
 
   #repeatingToggleHandler = (evt) => {
     evt.preventDefault();
@@ -256,44 +256,44 @@ export default class TaskEditView extends SmartView {
       // Аналогично, но наоборот, для повторения
       isDueDate: !this._data.isRepeating ? false : this._data.isDueDate,
     });
-  }
+  };
 
   #descriptionInputHandler = (evt) => {
     evt.preventDefault();
     this.updateData({
       description: evt.target.value,
     }, true);
-  }
+  };
 
   #dueDateChangeHandler = ([userDate]) => {
     this.updateData({
       dueDate: userDate,
     });
-  }
+  };
 
   #repeatingChangeHandler = (evt) => {
     evt.preventDefault();
     this.updateData({
       repeating: {...this._data.repeating, [evt.target.value]: evt.target.checked},
     });
-  }
+  };
 
   #colorChangeHandler = (evt) => {
     evt.preventDefault();
     this.updateData({
       color: evt.target.value,
     });
-  }
+  };
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
     this._callback.formSubmit(TaskEditView.parseDataToTask(this._data));
-  }
+  };
 
   #formDeleteClickHandler = (evt) => {
     evt.preventDefault();
     this._callback.deleteClick(TaskEditView.parseDataToTask(this._data));
-  }
+  };
 
   static parseTaskToData = (task) => ({...task,
     isDueDate: task.dueDate !== null,
@@ -329,5 +329,5 @@ export default class TaskEditView extends SmartView {
     delete task.isDeleting;
 
     return task;
-  }
+  };
 }

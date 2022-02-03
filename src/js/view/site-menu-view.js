@@ -45,7 +45,7 @@ export default class SiteMenuView extends AbstractView {
   setMenuClickHandler = (callback) => {
     this._callback.menuClick = callback;
     this.element.addEventListener('change', this.#menuClickHandler);
-  }
+  };
 
   setMenuItem = (menuItem) => {
     const item = this.element.querySelector(`[value=${menuItem}]`);
@@ -53,10 +53,10 @@ export default class SiteMenuView extends AbstractView {
     if (item !== null) {
       item.checked = true;
     }
-  }
+  };
 
   #menuClickHandler = (evt) => {
     evt.preventDefault();
     this._callback.menuClick(evt.target.value);
-  }
+  };
 }

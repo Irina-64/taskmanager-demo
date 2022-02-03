@@ -70,7 +70,7 @@ export default class FilterPresenter {
 
     replace(this.#filterComponent, prevFilterComponent);
     remove(prevFilterComponent);
-  }
+  };
 
   destroy = () => {
     remove(this.#filterComponent);
@@ -80,11 +80,11 @@ export default class FilterPresenter {
     this.#filterModel.removeObserver(this.#handleModelEvent);
 
     this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.ALL);
-  }
+  };
 
   #handleModelEvent = () => {
     this.init();
-  }
+  };
 
   #handleFilterTypeChange = (filterType) => {
     if (this.#filterModel.filter === filterType) {
@@ -92,5 +92,5 @@ export default class FilterPresenter {
     }
 
     this.#filterModel.setFilter(UpdateType.MAJOR, filterType);
-  }
+  };
 }

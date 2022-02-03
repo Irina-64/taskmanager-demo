@@ -82,30 +82,30 @@ export default class TaskView extends AbstractView {
   setEditClickHandler = (callback) => {
     this._callback.editClick = callback;
     this.element.querySelector('.card__btn--edit').addEventListener('click', this.#editClickHandler);
-  }
+  };
 
   setFavoriteClickHandler = (callback) => {
     this._callback.favoriteClick = callback;
     this.element.querySelector('.card__btn--favorites').addEventListener('click', this.#favoriteClickHandler);
-  }
+  };
 
   setArchiveClickHandler = (callback) => {
     this._callback.archiveClick = callback;
     this.element.querySelector('.card__btn--archive').addEventListener('click', this.#archiveClickHandler);
-  }
+  };
 
   #editClickHandler = (evt) => {
     evt.preventDefault();
     this._callback.editClick();
-  }
+  };
 
   #favoriteClickHandler = (evt) => {
     evt.preventDefault();
     this._callback.favoriteClick();
-  }
+  };
 
   #archiveClickHandler = (evt) => {
     evt.preventDefault();
     this._callback.archiveClick();
-  }
+  };
 }

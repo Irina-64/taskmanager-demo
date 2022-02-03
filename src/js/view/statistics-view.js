@@ -12,8 +12,8 @@ import {
   parseChartDate,
   getDatesInRange
 } from '../utils/statistics.js';
+import '../../../node_modules/flatpickr/dist/flatpickr.min.css';
 
-import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 
 const renderColorsChart = (colorsCtx, tasks) => {
   const taskColors = tasks.map((task) => task.color);
@@ -217,13 +217,13 @@ export default class StatisticsView extends SmartView {
       this.#datepicker.destroy();
       this.#datepicker = null;
     }
-  }
+  };
 
 
   restoreHandlers = () => {
     this.#setCharts();
     this.#setDatepicker();
-  }
+  };
 
   #dateChangeHandler = ([dateFrom, dateTo]) => {
     if (!dateFrom || !dateTo) {
@@ -234,7 +234,7 @@ export default class StatisticsView extends SmartView {
       dateFrom,
       dateTo,
     });
-  }
+  };
 
   #setDatepicker = () => {
     this.#datepicker = flatpickr(
@@ -246,7 +246,7 @@ export default class StatisticsView extends SmartView {
         onChange: this.#dateChangeHandler,
       },
     );
-  }
+  };
 
   #setCharts = () => {
     const {tasks, dateFrom, dateTo} = this._data;
@@ -255,5 +255,5 @@ export default class StatisticsView extends SmartView {
 
     this.#colorsChart = renderColorsChart(colorsCtx, tasks);
     this.#daysChart = renderDaysChart(daysCtx, tasks, dateFrom, dateTo);
-  }
+  };
 }

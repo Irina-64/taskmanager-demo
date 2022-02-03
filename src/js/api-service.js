@@ -30,7 +30,7 @@ export default class ApiService {
     const parsedResponse = await ApiService.parseResponse(response);
 
     return parsedResponse;
-  }
+  };
 
   addTask = async (task) => {
     const response = await this.#load({
@@ -43,7 +43,7 @@ export default class ApiService {
     const parsedResponse = await ApiService.parseResponse(response);
 
     return parsedResponse;
-  }
+  };
 
   deleteTask = async (task) => {
     const response = await this.#load({
@@ -52,7 +52,7 @@ export default class ApiService {
     });
 
     return response;
-  }
+  };
 
   #load = async ({
     url,
@@ -73,7 +73,7 @@ export default class ApiService {
     } catch (err) {
       ApiService.catchError(err);
     }
-  }
+  };
 
   #adaptToServer = (task) => {
     const adaptedTask = {...task,
@@ -90,7 +90,7 @@ export default class ApiService {
     delete adaptedTask.repeating;
 
     return adaptedTask;
-  }
+  };
 
   static parseResponse = (response) => response.json();
 
@@ -98,9 +98,9 @@ export default class ApiService {
     if (!response.ok) {
       throw new Error(`${response.status}: ${response.statusText}`);
     }
-  }
+  };
 
   static catchError = (err) => {
     throw err;
-  }
+  };
 }

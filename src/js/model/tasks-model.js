@@ -23,7 +23,7 @@ export default class TasksModel extends AbstractObservable {
     }
 
     this._notify(UpdateType.INIT);
-  }
+  };
 
   updateTask = async (updateType, update) => {
     const index = this.#tasks.findIndex((task) => task.id === update.id);
@@ -44,7 +44,7 @@ export default class TasksModel extends AbstractObservable {
     } catch(err) {
       throw new Error('Can\'t update task');
     }
-  }
+  };
 
   addTask = async (updateType, update) => {
     try {
@@ -55,7 +55,7 @@ export default class TasksModel extends AbstractObservable {
     } catch(err) {
       throw new Error('Can\'t add task');
     }
-  }
+  };
 
   deleteTask = async (updateType, update) => {
     const index = this.#tasks.findIndex((task) => task.id === update.id);
@@ -77,7 +77,7 @@ export default class TasksModel extends AbstractObservable {
     } catch(err) {
       throw new Error('Can\'t delete task');
     }
-  }
+  };
 
   #adaptToClient = (task) => {
     const adaptedTask = {...task,
@@ -94,5 +94,5 @@ export default class TasksModel extends AbstractObservable {
     delete adaptedTask['repeating_days'];
 
     return adaptedTask;
-  }
+  };
 }

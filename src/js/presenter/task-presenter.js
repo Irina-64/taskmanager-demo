@@ -24,7 +24,7 @@ export default class TaskPresenter {
   #taskEditComponent = null;
 
   #task = null;
-  #mode = Mode.DEFAULT
+  #mode = Mode.DEFAULT;
 
   constructor(taskListContainer, changeData, changeMode) {
     this.#taskListContainer = taskListContainer;
@@ -63,19 +63,19 @@ export default class TaskPresenter {
 
     remove(prevTaskComponent);
     remove(prevTaskEditComponent);
-  }
+  };
 
   destroy = () => {
     remove(this.#taskComponent);
     remove(this.#taskEditComponent);
-  }
+  };
 
   resetView = () => {
     if (this.#mode !== Mode.DEFAULT) {
       this.#taskEditComponent.reset(this.#task);
       this.#replaceFormToCard();
     }
-  }
+  };
 
   setViewState = (state) => {
     if (this.#mode === Mode.DEFAULT) {
@@ -108,20 +108,20 @@ export default class TaskPresenter {
         this.#taskEditComponent.shake(resetFormState);
         break;
     }
-  }
+  };
 
   #replaceCardToForm = () => {
     replace(this.#taskEditComponent, this.#taskComponent);
     document.addEventListener('keydown', this.#escKeyDownHandler);
     this.#changeMode();
     this.#mode = Mode.EDITING;
-  }
+  };
 
   #replaceFormToCard = () => {
     replace(this.#taskComponent, this.#taskEditComponent);
     document.removeEventListener('keydown', this.#escKeyDownHandler);
     this.#mode = Mode.DEFAULT;
-  }
+  };
 
   #escKeyDownHandler = (evt) => {
     if (evt.key === 'Escape' || evt.key === 'Esc') {
@@ -129,11 +129,11 @@ export default class TaskPresenter {
       this.#taskEditComponent.reset(this.#task);
       this.#replaceFormToCard();
     }
-  }
+  };
 
   #handleEditClick = () => {
     this.#replaceCardToForm();
-  }
+  };
 
   #handleFavoriteClick = () => {
     this.#changeData(
@@ -141,7 +141,7 @@ export default class TaskPresenter {
       UpdateType.MINOR,
       {...this.#task, isFavorite: !this.#task.isFavorite},
     );
-  }
+  };
 
   #handleArchiveClick = () => {
     this.#changeData(
@@ -149,7 +149,7 @@ export default class TaskPresenter {
       UpdateType.MINOR,
       {...this.#task, isArchive: !this.#task.isArchive},
     );
-  }
+  };
 
   #handleFormSubmit = (update) => {
     // Проверяем, поменялись ли в задаче данные, которые попадают под фильтрацию,
@@ -163,7 +163,7 @@ export default class TaskPresenter {
       isMinorUpdate ? UpdateType.MINOR : UpdateType.PATCH,
       update,
     );
-  }
+  };
 
   #handleDeleteClick = (task) => {
     this.#changeData(
@@ -171,5 +171,5 @@ export default class TaskPresenter {
       UpdateType.MINOR,
       task,
     );
-  }
+  };
 }

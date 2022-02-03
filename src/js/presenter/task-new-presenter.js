@@ -27,7 +27,7 @@ export default class TaskNewPresenter {
     render(this.#taskListContainer, this.#taskEditComponent, RenderPosition.AFTERBEGIN);
 
     document.addEventListener('keydown', this.#escKeyDownHandler);
-  }
+  };
 
   destroy = () => {
     if (this.#taskEditComponent === null) {
@@ -40,14 +40,14 @@ export default class TaskNewPresenter {
     this.#taskEditComponent = null;
 
     document.removeEventListener('keydown', this.#escKeyDownHandler);
-  }
+  };
 
   setSaving = () => {
     this.#taskEditComponent.updateData({
       isDisabled: true,
       isSaving: true,
     });
-  }
+  };
 
   setAborting = () => {
     const resetFormState = () => {
@@ -59,7 +59,7 @@ export default class TaskNewPresenter {
     };
 
     this.#taskEditComponent.shake(resetFormState);
-  }
+  };
 
   #handleFormSubmit = (task) => {
     this.#changeData(
@@ -67,16 +67,16 @@ export default class TaskNewPresenter {
       UpdateType.MINOR,
       task,
     );
-  }
+  };
 
   #handleDeleteClick = () => {
     this.destroy();
-  }
+  };
 
   #escKeyDownHandler = (evt) => {
     if (evt.key === 'Escape' || evt.key === 'Esc') {
       evt.preventDefault();
       this.destroy();
     }
-  }
+  };
 }
