@@ -9,6 +9,7 @@ import TaskNewPresenter from './task-new-presenter.js';
 import {render, RenderPosition, remove} from '../utils/render.js';
 import {sortTaskUp, sortTaskDown} from '../utils/task.js';
 import {filter} from '../utils/filter.js';
+import UiBlocker from '../utils/ui-blocker.js';
 import {SortType, UpdateType, UserAction, FilterType} from '../const.js';
 
 const TASK_COUNT_PER_STEP = 8;
@@ -31,6 +32,7 @@ export default class BoardPresenter {
   #currentSortType = SortType.DEFAULT;
   #filterType = FilterType.ALL;
   #isLoading = true;
+  #uiBlocker = new UiBlocker();
 
   constructor(boardContainer, tasksModel, filterModel) {
     this.#boardContainer = boardContainer;
@@ -74,6 +76,8 @@ export default class BoardPresenter {
   }
 
   #handleViewAction = async (actionType, updateType, update) => {
+    this.#uiBlocker.block();
+
     switch (actionType) {
       case UserAction.UPDATE_TASK:
         this.#taskPresenter.get(update.id).setSaving();
@@ -100,6 +104,8 @@ export default class BoardPresenter {
         }
         break;
     }
+
+    this.#uiBlocker.unblock();
   }
 
   #handleModelEvent = (updateType, data) => {
