@@ -40,6 +40,8 @@ export default class BoardPresenter {
     this.#filterModel = filterModel;
 
     this.#taskNewPresenter = new TaskNewPresenter(this.#taskListComponent, this.#handleViewAction);
+    this.#tasksModel.addObserver(this.#handleModelEvent);
+    this.#filterModel.addObserver(this.#handleModelEvent);
   }
 
   get tasks() {
@@ -60,24 +62,12 @@ export default class BoardPresenter {
   init = () => {
     render(this.#boardContainer, this.#boardComponent, RenderPosition.BEFOREEND);
     render(this.#boardComponent, this.#taskListComponent, RenderPosition.BEFOREEND);
-
-    this.#tasksModel.addObserver(this.#handleModelEvent);
-    this.#filterModel.addObserver(this.#handleModelEvent);
-
     this.#renderBoard();
   }
 
-  destroy = () => {
-    this.#clearBoard({resetRenderedTaskCount: true, resetSortType: true});
-
-    remove(this.#taskListComponent);
-    remove(this.#boardComponent);
-
-    this.#tasksModel.removeObserver(this.#handleModelEvent);
-    this.#filterModel.removeObserver(this.#handleModelEvent);
-  }
-
   createTask = (callback) => {
+    this.#currentSortType = SortType.DEFAULT;
+    this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.ALL);
     this.#taskNewPresenter.init(callback);
   }
 
